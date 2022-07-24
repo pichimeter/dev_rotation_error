@@ -62,12 +62,18 @@ function [G, C, freq, Pavg, step_resp_avg] = my_tfestimate(inp, out, window, Nov
     df = 1/(N*Ts);
     freq = (0:df:1/Ts-df).';
 
-    % average power spectras
-    G = frd(g    , freq, Ts, 'Units', 'Hz');
-    C = frd(c    , freq, Ts, 'Units', 'Hz');
-%     % average frequency responses
-%     G = frd(g_avg, freq, Ts, 'Units', 'Hz');
-%     C = frd(c_avg, freq, Ts, 'Units', 'Hz');
+    try
+        % average power spectras
+        G = frd(g    , freq, Ts, 'Units', 'Hz');
+        C = frd(c    , freq, Ts, 'Units', 'Hz');
+    catch
+        % average power spectras
+        G = frd(g    , 2*pi*freq, Ts);
+        C = frd(c    , 2*pi*freq, Ts);
+    end
+    %     % average frequency responses
+    %     G = frd(g_avg, freq, Ts, 'Units', 'Hz');
+    %     C = frd(c_avg, freq, Ts, 'Units', 'Hz');
 
 end
 

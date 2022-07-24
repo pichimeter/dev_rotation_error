@@ -16,23 +16,23 @@ Prp = krp / J(1) * tf(1, [1 0]) * tf(1,[1/(2*pi*10) 1]);
 Crp = 0.8*(1.5 + 23/s + 0.014*s*tf(1,[1/(2*pi*100) 1])*tf(1,[1/(2*pi*100) 1]));
 Trp = feedback(Prp*Crp, 1);
 figure(88)
-bode(krp / J(1) * Prp_, Prp, Trp)
+bode(krp / J(1) * Prp_, Prp, Trp), grid on
 
-% ky = J(3) * 2;
-% Py_ = 2 * tf(1,[1/(2*pi*10) 1]) / (ky / J(3));  % open-loop plant u->w rp
-% Py = ky / J(3) * tf(1,[1/(2*pi*10) 1]);
-% Cy = 1.2*(0.8 + 48/s);
-% Ty = feedback(Py*Cy, 1);
-% figure(99)
-% bode(ky / J(3) * Py_, Py, Ty)
+ky = J(3) * 2;
+Py_ = 2 * tf(1,[1/(2*pi*10) 1]) / (ky / J(3));  % open-loop plant u->w rp
+Py = ky / J(3) * tf(1,[1/(2*pi*10) 1]);
+Cy = 1.2*(0.8 + 48/s);
+Ty = feedback(Py*Cy, 1);
+figure(99)
+bode(ky / J(3) * Py_, Py, Ty), grid on
 
-ky = krp;
-Py_ = Prp_;
-Py = Prp;
-Cy = Crp;
-Ty = Trp;
+% ky = krp;
+% Py_ = Prp_;
+% Py = Prp;
+% Cy = Crp;
+% Ty = Trp;
 
-Kp = [1 1 1];
+Kp = [1 1 1]*0.9;
 Jinv = diag(1./J);
 k = [krp krp ky];
 
@@ -45,7 +45,7 @@ quat_setp = rpy2quat(rpy_setp);
 CEB_setp  = quat2CEB(rpy2quat(rpy_setp));
 
 Tsim = 0.2;
-Tsave = Tsim / 20;
+Tsave = Tsim / 30;
 
 %%
 
@@ -114,7 +114,7 @@ for i = 1:N
     quiver3(0, 0, 0, Rs(1,2), Rs(2,2), Rs(3,2), DashedLine, 'color', [0 0.5 0], 'LineWidth', LineWidth, 'AutoScale', 'off')
     quiver3(0, 0, 0, Rs(1,3), Rs(2,3), Rs(3,3), DashedLine, 'color', [0 0 1]  , 'LineWidth', LineWidth, 'AutoScale', 'off'), hold off   
     view(65, 23)
-    axis equal
+    axis equal, title('RP Cntrl')
     set(gcf, 'color', 'w');
     
     subplot(132)
@@ -134,7 +134,7 @@ for i = 1:N
     quiver3(0, 0, 0, Rs(1,2), Rs(2,2), Rs(3,2), DashedLine, 'color', [0 0.5 0], 'LineWidth', LineWidth, 'AutoScale', 'off')
     quiver3(0, 0, 0, Rs(1,3), Rs(2,3), Rs(3,3), DashedLine, 'color', [0 0 1]  , 'LineWidth', LineWidth, 'AutoScale', 'off'), hold off   
     view(65, 23)
-    axis equal
+    axis equal, title('Quat Error Cntrl')
     set(gcf, 'color', 'w');
     
     subplot(133)
@@ -154,7 +154,7 @@ for i = 1:N
     quiver3(0, 0, 0, Rs(1,2), Rs(2,2), Rs(3,2), DashedLine, 'color', [0 0.5 0], 'LineWidth', LineWidth, 'AutoScale', 'off')
     quiver3(0, 0, 0, Rs(1,3), Rs(2,3), Rs(3,3), DashedLine, 'color', [0 0 1]  , 'LineWidth', LineWidth, 'AutoScale', 'off'), hold off   
     view(65, 23)
-    axis equal
+    axis equal, title('Axis z Error Cntrl')
     set(gcf, 'color', 'w');
     drawnow;
 
