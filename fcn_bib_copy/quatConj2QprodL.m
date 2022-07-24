@@ -1,7 +1,7 @@
 function Qprod = quatConj2QprodL(q)
 % q = [qw qx qy qz], ||q|| = 1
 
-q(2:4) = -q(2:4;
+q(2:4) = -q(2:4);
 
 % Qprod = [[ qw, -qx, -qy, -qz]; ...
 %          [ qx,  qw, -qz,  qy]; ...

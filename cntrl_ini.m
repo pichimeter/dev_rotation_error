@@ -15,7 +15,7 @@ Prp_ = 130 * tf(1, [1 0]) * tf(1,[1/(2*pi*10) 1]) / (krp / J(1)); % open-loop pl
 Prp = krp / J(1) * tf(1, [1 0]) * tf(1,[1/(2*pi*10) 1]);
 Crp = 0.8*(1.5 + 23/s + 0.014*s*tf(1,[1/(2*pi*100) 1])*tf(1,[1/(2*pi*100) 1]));
 Trp = feedback(Prp*Crp, 1);
-figure(88)
+figure(1)
 bode(krp / J(1) * Prp_, Prp, Trp), grid on
 
 ky = J(3) * 2;
@@ -23,7 +23,7 @@ Py_ = 2 * tf(1,[1/(2*pi*10) 1]) / (ky / J(3));  % open-loop plant u->w rp
 Py = ky / J(3) * tf(1,[1/(2*pi*10) 1]);
 Cy = 1.2*(0.8 + 48/s);
 Ty = feedback(Py*Cy, 1);
-figure(99)
+figure(2)
 bode(ky / J(3) * Py_, Py, Ty), grid on
 
 % ky = krp;
@@ -47,7 +47,7 @@ CEB_setp  = quat2CEB(rpy2quat(rpy_setp));
 Tsim = 0.2;
 Tsave = Tsim / 30;
 
-%%
+%% simulate first
 
 clc
 
@@ -55,7 +55,7 @@ quat_rpy = simout.signals.values(:,1:4);
 quat_err = simout.signals.values(:,5:8);
 quat_red = simout.signals.values(:,9:12);
 
-% errorangle ez
+% error angle ez
 CEB_rpy = quat2CEB(quat_rpy(end,:));
 CEB_err = quat2CEB(quat_err(end,:));
 CEB_red = quat2CEB(quat_red(end,:));
@@ -63,6 +63,7 @@ ang_rpy = acos(CEB_rpy(:,3).' * CEB_setp(:,3)) * 180/pi
 ang_err = acos(CEB_err(:,3).' * CEB_setp(:,3)) * 180/pi
 ang_red = acos(CEB_red(:,3).' * CEB_setp(:,3)) * 180/pi
 
+% quaternion error
 [ang_rpy, ax_rpy] = quatError2AxAng(quat_setp, quat_rpy(end,:));
 ang_rpy * 180/pi
 [ang_err, ax_err] = quatError2AxAng(quat_setp, quat_err(end,:));
@@ -70,6 +71,7 @@ ang_err * 180/pi
 [ang_red, ax_red] = quatError2AxAng(quat_setp, quat_red(end,:));
 ang_red * 180/pi
 
+% rpy error
 quat_setp_conj = quat_setp; quat_setp_conj(2:4) = -quat_setp_conj(2:4);
 rpy_rpy = quat2rpy( ( quat2QprodL(quat_setp_conj) * removeYawFromQuat(quat_rpy(end,:)).' ).' );
 rpy_rpy * 180/pi
@@ -96,7 +98,7 @@ for i = 1:N
     CEB_err = quat2CEB(quat_err(i,:));
     CEB_red = quat2CEB(quat_red(i,:));
     
-    figure(1)
+    figure(3)
     subplot(131)
     h = surfl(x, y, z); hold on
     set(h, 'FaceAlpha', 0.1)
