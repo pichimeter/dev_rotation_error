@@ -37,11 +37,11 @@ Kp = [1 1 1]*0.9;
 Jinv = diag(1./J);
 k = [krp krp ky];
 
-rpy_0  = [-85, 75, 0] * pi/180;
+rpy_0  = [-65, -65, 0] * pi/180;
 quat_0 = rpy2quat(rpy_0);
 CEB_0  = quat2CEB(rpy2quat(rpy_0));
 
-rpy_setp  = [75, -80, 0] * pi/180;
+rpy_setp  = [55, 60, 0] * pi/180;
 quat_setp = rpy2quat(rpy_setp);
 CEB_setp  = quat2CEB(rpy2quat(rpy_setp));
 
