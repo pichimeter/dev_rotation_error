@@ -19,29 +19,29 @@ Trp = feedback(Prp*Crp, 1);
 figure(1)
 bode(krp / J(1) * Prp_, Prp, Trp), grid on
 
-ky = J(3) * 2;
-Py_ = 2 * tf(1,[1/(2*pi*10) 1]) / (ky / J(3));  % open-loop plant u->w y
-Py = ky / J(3) * tf(1,[1/(2*pi*10) 1]);
-Cy = 1.2*(0.8 + 48/s);
-Ty = feedback(Py*Cy, 1);
-figure(2)
-bode(ky / J(3) * Py_, Py, Ty), grid on
+% ky = J(3) * 2;
+% Py_ = 2 * tf(1,[1/(2*pi*10) 1]) / (ky / J(3));  % open-loop plant u->w y
+% Py = ky / J(3) * tf(1,[1/(2*pi*10) 1]);
+% Cy = 1.2*(0.8 + 48/s);
+% Ty = feedback(Py*Cy, 1);
+% figure(2)
+% bode(ky / J(3) * Py_, Py, Ty), grid on
 
-% ky = krp;
-% Py_ = Prp_;
-% Py = Prp;
-% Cy = Crp;
-% Ty = Trp;
+ky = krp;
+Py_ = Prp_;
+Py = Prp;
+Cy = Crp;
+Ty = Trp;
 
 Kp = [1 1 1]*0.9;
 Jinv = diag(1./J);
 k = [krp krp ky];
 
-rpy_0  = [-65, -65, 0] * pi/180;
+rpy_0  = [-65, -70, 0] * pi/180;
 quat_0 = rpy2quat(rpy_0);
 CEB_0  = quat2CEB(rpy2quat(rpy_0));
 
-rpy_setp  = [55, 60, 0] * pi/180;
+rpy_setp  = [75, 55, 0] * pi/180;
 quat_setp = rpy2quat(rpy_setp);
 CEB_setp  = quat2CEB(rpy2quat(rpy_setp));
 
@@ -80,6 +80,15 @@ rpy_err = quat2rpy( ( quat2QprodL(quat_setp_conj) * removeYawFromQuat(quat_err(e
 rpy_err * 180/pi
 rpy_red = quat2rpy( ( quat2QprodL(quat_setp_conj) * removeYawFromQuat(quat_red(end,:)).' ).' );
 rpy_red * 180/pi
+
+% % rpy error
+% quat_setp_conj = quat_setp; quat_setp_conj(2:4) = -quat_setp_conj(2:4);
+% rpy_rpy = quat2rpy( ( quat2QprodL(quat_setp_conj) * (quat_rpy(end,:)).' ).' );
+% rpy_rpy * 180/pi
+% rpy_err = quat2rpy( ( quat2QprodL(quat_setp_conj) * (quat_err(end,:)).' ).' );
+% rpy_err * 180/pi
+% rpy_red = quat2rpy( ( quat2QprodL(quat_setp_conj) * (quat_red(end,:)).' ).' );
+% rpy_red * 180/pi
 
 %%
 
