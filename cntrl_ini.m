@@ -37,11 +37,11 @@ Kp = [1 1 1]*0.9;
 Jinv = diag(1./J);
 k = [krp krp ky];
 
-rpy_0  = [-65, -70, 0] * pi/180;
+rpy_0  = [-5, -135, 0] * pi/180;
 quat_0 = rpy2quat(rpy_0);
 CEB_0  = quat2CEB(rpy2quat(rpy_0));
 
-rpy_setp  = [75, 55, 0] * pi/180;
+rpy_setp  = [15, 45, 0] * pi/180;
 quat_setp = rpy2quat(rpy_setp);
 CEB_setp  = quat2CEB(rpy2quat(rpy_setp));
 
@@ -72,23 +72,23 @@ ang_err * 180/pi
 [ang_red, ax_red] = quatError2AxAng(quat_setp, quat_red(end,:));
 ang_red * 180/pi
 
-% rpy error without yaw
-quat_setp_conj = quat_setp; quat_setp_conj(2:4) = -quat_setp_conj(2:4);
-rpy_rpy = quat2rpy( ( quat2QprodL(quat_setp_conj) * removeYawFromQuat(quat_rpy(end,:)).' ).' );
-rpy_rpy * 180/pi
-rpy_err = quat2rpy( ( quat2QprodL(quat_setp_conj) * removeYawFromQuat(quat_err(end,:)).' ).' );
-rpy_err * 180/pi
-rpy_red = quat2rpy( ( quat2QprodL(quat_setp_conj) * removeYawFromQuat(quat_red(end,:)).' ).' );
-rpy_red * 180/pi
-
-% % rpy error
+% % rpy error without yaw
 % quat_setp_conj = quat_setp; quat_setp_conj(2:4) = -quat_setp_conj(2:4);
-% rpy_rpy = quat2rpy( ( quat2QprodL(quat_setp_conj) * (quat_rpy(end,:)).' ).' );
+% rpy_rpy = quat2rpy( ( quat2QprodL(quat_setp_conj) * removeYawFromQuat(quat_rpy(end,:)).' ).' );
 % rpy_rpy * 180/pi
-% rpy_err = quat2rpy( ( quat2QprodL(quat_setp_conj) * (quat_err(end,:)).' ).' );
+% rpy_err = quat2rpy( ( quat2QprodL(quat_setp_conj) * removeYawFromQuat(quat_err(end,:)).' ).' );
 % rpy_err * 180/pi
-% rpy_red = quat2rpy( ( quat2QprodL(quat_setp_conj) * (quat_red(end,:)).' ).' );
+% rpy_red = quat2rpy( ( quat2QprodL(quat_setp_conj) * removeYawFromQuat(quat_red(end,:)).' ).' );
 % rpy_red * 180/pi
+
+% rpy error
+quat_setp_conj = quat_setp; quat_setp_conj(2:4) = -quat_setp_conj(2:4);
+rpy_rpy = quat2rpy( ( quat2QprodL(quat_setp_conj) * (quat_rpy(end,:)).' ).' );
+rpy_rpy * 180/pi
+rpy_err = quat2rpy( ( quat2QprodL(quat_setp_conj) * (quat_err(end,:)).' ).' );
+rpy_err * 180/pi
+rpy_red = quat2rpy( ( quat2QprodL(quat_setp_conj) * (quat_red(end,:)).' ).' );
+rpy_red * 180/pi
 
 %%
 
@@ -111,7 +111,7 @@ for i = 1:N
     CEB_err = quat2CEB(quat_err(i,:));
     CEB_red = quat2CEB(quat_red(i,:));
     
-    figure(3)
+    figure(4)
     subplot(131)
     h = surfl(x, y, z); hold on
     set(h, 'FaceAlpha', 0.1)
