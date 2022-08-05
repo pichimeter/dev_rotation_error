@@ -33,17 +33,23 @@ Py = Prp;
 Cy = Crp;
 Ty = Trp;
 
-Kp = [1 1 1]*0.9;
+Kp = [1 1 1]*1.2;
 Jinv = diag(1./J);
 k = [krp krp ky];
 
-rpy_0  = [-5, -135, 0] * pi/180;
+rpy_0  = [-60, -85, 0] * pi/180;
 quat_0 = rpy2quat(rpy_0);
 CEB_0  = quat2CEB(rpy2quat(rpy_0));
+tilt_0 = acos(CEB_0(3,3));
 
-rpy_setp  = [15, 45, 0] * pi/180;
+rpy_setp  = [70, 85, 0] * pi/180;
 quat_setp = rpy2quat(rpy_setp);
 CEB_setp  = quat2CEB(rpy2quat(rpy_setp));
+tilt_setp = acos(CEB_setp(3,3));
+
+clc
+tilt_0 * 180/pi
+tilt_setp * 180/pi
 
 Tsim = 0.15;
 Tsave = Tsim / 50;
